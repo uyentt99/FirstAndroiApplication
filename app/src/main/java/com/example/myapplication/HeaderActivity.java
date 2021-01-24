@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HeaderActivity extends AppCompatActivity {
     TextView textViewName;
@@ -31,14 +32,16 @@ public class HeaderActivity extends AppCompatActivity {
     }
 
     public void xemThietBi(){
+        Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivityForResult(loginIntent,0);
     }
 
     public void themThietBi(){
-
+        Toast.makeText(getApplicationContext(), "Hasn't supported",Toast.LENGTH_SHORT).show();
     }
 
     public void xoaThietBi(){
-
+        Toast.makeText(getApplicationContext(), "Hasn't supported",Toast.LENGTH_SHORT).show();
     }
 
     public void logOut(){

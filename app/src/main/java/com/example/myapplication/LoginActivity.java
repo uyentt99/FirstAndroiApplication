@@ -29,16 +29,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (username.getText().toString().equals("admin") &&
                         password.getText().toString().equals("admin")) {
+                    SharedPreferences sp=getSharedPreferences("Login", 0);
+                    SharedPreferences.Editor Ed=sp.edit();
+                    Ed.putString("UserName",username.getText().toString() );
+                    Ed.putString("Password",password.getText().toString());
+                    Ed.apply();
+                    Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivityForResult(loginIntent, 0);
                 }else {
-
+                    Toast.makeText(getApplicationContext(), "Wrong username or password ",Toast.LENGTH_SHORT).show();
                 }
-                SharedPreferences sp=getSharedPreferences("Login", 0);
-                SharedPreferences.Editor Ed=sp.edit();
-                Ed.putString("UserName",username.getText().toString() );
-                Ed.putString("Password",password.getText().toString());
-                Ed.apply();
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivityForResult(loginIntent, 0);
+
             }
         });
     }
