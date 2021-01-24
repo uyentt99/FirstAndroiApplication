@@ -33,62 +33,53 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
-    TextInputEditText username;
-    TextInputEditText password;
+public class AddActivity extends HeaderActivity {
+    TextInputEditText device_code;
 
-    Button loginButton;
+    Button addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_add);
+        setHeaderView();
 
-        username = (TextInputEditText) findViewById(R.id.username);
-        password = (TextInputEditText) findViewById(R.id.password);
-        loginButton = (Button)findViewById(R.id.login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        device_code = (TextInputEditText) findViewById(R.id.device_code);
+        addButton = (Button)findViewById(R.id.add);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(username.getText().toString(),password.getText().toString());
-
+                sendAddRequest(device_code.getText().toString());
             }
         });
     }
 
-    public void loginRespones(String respone){
+    public void getAddRespones(String response){
         try {
-            JSONObject obj = new JSONObject(respone);
-            Toast.makeText(getApplicationContext(), obj.get("message").toString(),Toast.LENGTH_SHORT).show();
-            if (obj.get("status").toString().equals("0")) {
-                SharedPreferences sp=getSharedPreferences("Login", 0);
-                SharedPreferences.Editor Ed=sp.edit();
-                Ed.putString("UserName",obj.get("user_name").toString());
-                Ed.putString("token",obj.get("token").toString());
-                Ed.apply();
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivityForResult(loginIntent, 0);
-            }
-
+            JSONObject obj = new JSONObject(response);
+            System.out.println("Response " + obj.toString());
+            Toast.makeText(getApplicationContext(), obj.get("message").toString(),Toast.LENGTH_LONG).show();
         } catch (Throwable t) {
-            Log.e("My App", "Could not parse malformed JSON: \"" + respone + "\"");
+            Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
         }
     }
 
-    public void login(String username, String password) {
-        String url = MainActivity.url+"/login";
+    public void sendAddRequest(String device_code) {
+        String url = MainActivity.url+"/registerDevice";
+        SharedPreferences sp=this.getSharedPreferences("Login", MODE_PRIVATE);
+        String token = sp.getString("token", null);
+        System.out.println("Token "+token);
         Map<String, String> postParam= new HashMap<String, String>();
-        postParam.put("user_name", username);
-        postParam.put("password", password);
+        postParam.put("devicecode", device_code);
         JSONObject jsonBody = new JSONObject(postParam);
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url
+                    , new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.i("VOLLEY", response);
-                    loginRespones(response);
+                    getAddRespones(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -96,15 +87,12 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("VOLLEY", error.toString());
                     System.out.println(error.getMessage());
                     Toast.makeText(getApplicationContext(), "Connect Error",Toast.LENGTH_SHORT).show();
-//                    String respone = "{\"status\":\"1\",\"message\":\"login success\",\"user_name\":\"khiempm1\",\"token\":\"ancedsvs:dbskcn:dkmcdcd:dkmcdkmc\"}";
-//                    loginRespones(respone);
                 }
             }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public byte[] getBody()  {
                     try {
@@ -114,8 +102,15 @@ public class LoginActivity extends AppCompatActivity {
                         return null;
                     }
                 }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> header = new HashMap<>();
+                    header.put("Content-Type","application/json; charset=utf-8");
+                    header.put("Authorization","Bearer "+token);
+                    return header;
+                }
             };
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,1,
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,1,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
         } catch (Exception e) {
@@ -123,4 +118,5 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Connect Error",Toast.LENGTH_SHORT).show();
         }
     }
+
 }

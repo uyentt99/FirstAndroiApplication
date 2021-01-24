@@ -16,8 +16,55 @@
         <com.anychart.AnyChartView
             android:id="@+id/any_chart_view"
             android:layout_width="match_parent"
-            android:layout_height="278dp">
+            android:layout_height="278dp"
+            android:layout_marginTop="10dp">
         </com.anychart.AnyChartView>
+        <TextView
+            android:id="@+id/textViewItem"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:text="Example"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="50dp"/>
+        <TextView
+            android:id="@+id/textViewNote"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Some note for this device"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="50dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+
+            <Button
+                android:id="@+id/buttonWa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tưới nước"
+                android:layout_marginLeft="100dp"/>
+
+            <Button
+                android:id="@+id/buttonLoad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reload"
+                android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -17,7 +17,7 @@ public class HeaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    public void setView(){
+    public void setHeaderView(){
         SharedPreferences sp=this.getSharedPreferences("Login", MODE_PRIVATE);
         String user = sp.getString("UserName", null);
         textViewName = (TextView) findViewById(R.id.textViewName);
@@ -37,11 +37,13 @@ public class HeaderActivity extends AppCompatActivity {
     }
 
     public void themThietBi(){
-        Toast.makeText(getApplicationContext(), "Hasn't supported",Toast.LENGTH_SHORT).show();
+        Intent loginIntent = new Intent(getApplicationContext(), AddActivity.class);
+        startActivityForResult(loginIntent,0);
     }
 
     public void xoaThietBi(){
-        Toast.makeText(getApplicationContext(), "Hasn't supported",Toast.LENGTH_SHORT).show();
+        Intent loginIntent = new Intent(getApplicationContext(), DeleteActivity.class);
+        startActivityForResult(loginIntent,0);
     }
 
     public void logOut(){

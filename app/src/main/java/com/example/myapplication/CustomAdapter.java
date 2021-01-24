@@ -7,20 +7,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CustomAdapter extends BaseAdapter {
     Context context;
-    String itemList[];
+    JSONArray listDevices;
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, String[] itemList) {
+    public CustomAdapter(Context applicationContext, JSONArray listDevices) {
         this.context = context;
-        this.itemList = itemList;
+        this.listDevices = listDevices;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return itemList.length;
+        return listDevices.length();
     }
 
     @Override
@@ -36,8 +40,18 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.activity_listview, null);
-        TextView country = (TextView) view.findViewById(R.id.textViewItem);
-        country.setText(itemList[i]);
+        TextView name = (TextView) view.findViewById(R.id.textViewItem);
+        TextView code = (TextView) view.findViewById(R.id.textViewNote);
+        JSONObject device = null;
+        try {
+            device = (JSONObject) listDevices.get(i);
+            System.out.println("Show device "+device.toString());
+            name.setText(device.get("device_name").toString());
+            code.setText(device.get("device_code").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 }
