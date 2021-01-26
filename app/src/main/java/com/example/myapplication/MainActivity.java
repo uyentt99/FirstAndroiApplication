@@ -9,7 +9,7 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String url = "http://f0fe2e4e27d2.ngrok.io";
+    public static final String url = "http://e411ad1fadd2.ngrok.io";
     TextInputEditText username;
     TextInputEditText password;
 
